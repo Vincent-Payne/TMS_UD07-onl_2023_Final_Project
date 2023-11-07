@@ -3449,6 +3449,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 766915246}
     m_Modifications:
+    - target: {fileID: 1578940536641971711, guid: 1ca832c09227ac047ab74d6f4c11eef4, type: 3}
+      propertyPath: _damage
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5488191236028817762, guid: 1ca832c09227ac047ab74d6f4c11eef4, type: 3}
       propertyPath: m_Name
       value: Bat
@@ -4341,9 +4345,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce419a0ed02649ebb1f0133749b785c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _healthManager: {fileID: 973033343}
+  _healthBarManager: {fileID: 973033343}
   _currentHealth: 4
   _maxHealth: 4
+  _invulnerabilityTime: 2
   _playerView: {fileID: 4665502403641353601}
   _playerPhysics: {fileID: 4665502403220749846}
   _invulnerabilityView: {fileID: 5741407081349562439}

@@ -15,7 +15,7 @@ namespace Platformer.Player
         [SerializeField]
         private float _currentHealth, _maxHealth;
         [SerializeField]
-        float invulnerabilityTime;
+        private float _invulnerabilityTime;
 
         private bool _invulnerableAfterHit;
         private bool _invulnerableByCherry;
@@ -79,7 +79,9 @@ namespace Platformer.Player
 
             if (Input.GetKeyDown(KeyCode.Q))
             {
-                _isJumping = true;
+                _invulnerableByCherry = true;
+                _invulnerabilityView.enabled = true;
+                StartCoroutine(DisableInvulnerabilityByCherry(_invulnerabilityTime));
             }
 
             _playerView.Tick(_playerPhysics.Velocity, _playerPhysics.IsOnGround);
@@ -142,6 +144,13 @@ namespace Platformer.Player
         {
             yield return new WaitForSeconds(1f);
             _invulnerableAfterHit = false;
+        }
+
+        private IEnumerator DisableInvulnerabilityByCherry(float time)
+        {
+            yield return new WaitForSeconds(time);
+            _invulnerableByCherry = false;
+            _invulnerabilityView.enabled = false;
         }
     }
 }
