@@ -10,12 +10,15 @@ namespace Platformer.Player
     public class PlayerController : MonoBehaviour, IDamageable
     {
         [SerializeField]
-        private HealthBarManager _healthManager;
+        private HealthBarManager _healthBarManager;
 
         [SerializeField]
         private float _currentHealth, _maxHealth;
+        [SerializeField]
+        float invulnerabilityTime;
 
-        private bool _isInvulnerable;
+        private bool _invulnerableAfterHit;
+        private bool _invulnerableByCherry;
 
         [SerializeField]
         private PlayerView _playerView;
@@ -41,10 +44,11 @@ namespace Platformer.Player
 
         private void Start()
         {
-            _healthManager.CurrentHealth = _currentHealth;
-            _healthManager.MaxHealth = _maxHealth;
-            _healthManager.DrawHearts();
+            _healthBarManager.CurrentHealth = _currentHealth;
+            _healthBarManager.MaxHealth = _maxHealth;
+            _healthBarManager.DrawHearts();
             _playerPhysics.OnCollided += OnCollided;
+            _invulnerabilityView.enabled = false;
 
 
         }
@@ -94,66 +98,31 @@ namespace Platformer.Player
 
         private void OnCollided(GameObject collidedObject)
         {
-            if (collidedObject.TryGetComponent<IDamageSource>(out var damageSource) && !_isInvulnerable)
+            if (collidedObject.TryGetComponent<IDamageSource>(out var damageSource) && !_invulnerableAfterHit && !_invulnerableByCherry)
             {
-                _healthManager.CurrentHealth -= damageSource.Damage;
-                Debug.Log(_isInvulnerable);
+                _healthBarManager.CurrentHealth -= damageSource.Damage;
+                Debug.Log(_invulnerableAfterHit);
 
-                if (_healthManager.CurrentHealth < 1)
+                if (_healthBarManager.CurrentHealth < 1)
                 {
-                    // Die
+                    // Death
                     _playerPhysics.Disable();
                     _playerView.PlayDieAnimation(OnDieAnimationFinished);
+                    SoundManager.Sound_Manager.PlayPlayerDeathSound();
                 }
                 else
                 {
                     // Hit
                     _playerPhysics.Disable();
                     _playerView.PlayHitAnimation(OnHitAnimationFinished);
+                    SoundManager.Sound_Manager.PlayPlayerHitByEnemySound();
+                    _invulnerableAfterHit = true;
+                    StartCoroutine(DisableInvulnerabilityAfterHitCoroutine());
                 }
 
                 OnCurrentHealthChanged?.Invoke();
             }
-            //if (collidedObject.TryGetComponent<IDamageSource>(out var damageSource))
-            //{
-            //    var isDamageTaken = _health.TakeDamage(damageSource.Damage);
-
-            //    if (!isDamageTaken)
-            //    {
-            //        return;
-            //    }
-
-            //    if (_health.IsDead)
-            //    {
-            //        // Die
-            //        _playerView.PlayDieAnimation(OnDieAnimationFinished);
-            //    }
-            //    else
-            //    {
-            //        // Hit
-            //        _playerView.PlayHitAnimation(OnHitAnimationFinished);
-            //    }
-            //}
         }
-
-        //private void OnHealthNumLivesChanged(int numLives)
-        //{
-        //OnHealthNumLivesChanged?.Invoke(numLives);
-        //}
-
-        //private void OnInvulnerabilityEnabled()
-        //{
-        //    _playerPhysics.Disable();
-
-        //    _invulnerabilityView.enabled = true;
-        //}
-
-        //private void OnInvulnerabilityDisabled()
-        //{
-        //    _playerPhysics.Enable();
-
-        //    _invulnerabilityView.enabled = false;
-        //}
 
         private void OnHitAnimationFinished()
         {
@@ -169,14 +138,10 @@ namespace Platformer.Player
             OnPickableCollected?.Invoke(pickable);
         }
 
-        //public void EnableInvulnerability()
-        //{
-        //    _health.EnableInvulnerability();
-        //}
-
-        //public void Revive()
-        //{
-        //    _health.Revive();
-        //}
+        private IEnumerator DisableInvulnerabilityAfterHitCoroutine()
+        {
+            yield return new WaitForSeconds(1f);
+            _invulnerableAfterHit = false;
+        }
     }
 }

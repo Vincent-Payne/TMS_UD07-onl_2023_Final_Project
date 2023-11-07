@@ -32,25 +32,16 @@ namespace Platformer
             }
 
             _player.OnPickableCollected += OnPickableCollected;
-            _player.OnDied += OnDied;
         }
 
         private void OnDestroy()
         {
             _player.OnPickableCollected -= OnPickableCollected;
-            //_player.OnHealthNumLivesChanged -= OnHealthNumLivesChanged;
-            _player.OnDied -= OnDied;
         }
 
         private void OnHealthNumLivesChanged(int numLives)
         {
             _numLivesChannel.Publish(numLives);
-        }
-
-        private void OnDied()
-        {
-            // jTODO show game over screen
-            EditorApplication.isPaused = true;
         }
 
         private void OnPickableCollected(IPickable pickable)
