@@ -32,26 +32,17 @@ namespace Platformer
             }
 
             _player.OnPickableCollected += OnPickableCollected;
-            _player.OnNumLivesChanged += OnNumLivesChanged;
             _player.OnDied += OnDied;
-
-            Init();
         }
 
         private void OnDestroy()
         {
             _player.OnPickableCollected -= OnPickableCollected;
-            _player.OnNumLivesChanged -= OnNumLivesChanged;
+            //_player.OnHealthNumLivesChanged -= OnHealthNumLivesChanged;
             _player.OnDied -= OnDied;
         }
 
-        private void Init()
-        {
-            _numLivesChannel.Publish(_player.NumLives);
-            _scoreChannel.Publish(_score);
-        }
-
-        private void OnNumLivesChanged(int numLives)
+        private void OnHealthNumLivesChanged(int numLives)
         {
             _numLivesChannel.Publish(numLives);
         }
@@ -71,13 +62,13 @@ namespace Platformer
 
             if (pickable is CherryOfInvulnerability)
             {
-                if (!_player.IsInvulnerable)
-                {
-                    _player.EnableInvulnerability();
-                    pickable.Pick(_player.gameObject);
-                    SoundManager.Sound_Manager.PlayPickCherrySound();
-                    _score += pickable.ScoreIncrement;
-                }
+                //if (!_player.IsInvulnerable)
+                //{
+                //    _player.EnableInvulnerability();
+                //    pickable.Pick(_player.gameObject);
+                //    SoundManager.Sound_Manager.PlayPickCherrySound();
+                //    _score += pickable.ScoreIncrement;
+                //}
             }
             else
             {

@@ -1,19 +1,21 @@
+using Platformer.Player;
 using System;
 using Platformer.Common;
 using Platformer.Pickables;
 using UnityEngine;
+using System.Collections;
 
 namespace Platformer.Player
 {
     public class PlayerController : MonoBehaviour, IDamageable
     {
-        public event Action<int> OnNumLivesChanged;
-        public event Action OnDied;
-        public event Action<IPickable> OnPickableCollected;
-
+        [SerializeField]
+        private HealthBarManager _healthManager;
 
         [SerializeField]
-        private Health _health;
+        private float _currentHealth, _maxHealth;
+
+        private bool _isInvulnerable;
 
         [SerializeField]
         private PlayerView _playerView;
@@ -24,48 +26,37 @@ namespace Platformer.Player
         [SerializeField]
         private SpriteRenderer _invulnerabilityView;
 
-
-        public int NumLives => _health.NumLives;
-        public bool IsInvulnerable => _health.IsInvulnerable;
-
-
         private bool _isRunningLeft;
         private bool _isRunningRight;
         private bool _isJumping;
 
+        public static event Action OnCurrentHealthChanged;
+        public event Action OnDied;
+        public event Action<IPickable> OnPickableCollected;
 
         private void Awake()
         {
-            // _playerPhysics.OnCollided += OnCollided;
+             _playerPhysics.OnCollided += OnCollided;
         }
 
         private void Start()
         {
-            _health.OnNumLivesChanged += OnHealthNumLivesChanged;
-            _health.OnInvulnerabilityEnabled += OnInvulnerabilityEnabled;
-            _health.OnInvulnerabilityDisabled += OnInvulnerabilityDisabled;
-
+            _healthManager.CurrentHealth = _currentHealth;
+            _healthManager.MaxHealth = _maxHealth;
+            _healthManager.DrawHearts();
             _playerPhysics.OnCollided += OnCollided;
 
-            _health.Init();
+
         }
 
         private void OnDestroy()
         {
-            _health.OnNumLivesChanged -= OnHealthNumLivesChanged;
-            _health.OnInvulnerabilityEnabled -= OnInvulnerabilityEnabled;
-            _health.OnInvulnerabilityDisabled -= OnInvulnerabilityDisabled;
-
             _playerPhysics.OnCollided -= OnCollided;
         }
 
 
         private void Update()
         {
-            if (_health.IsDead)
-            {
-                return;
-            }
 
             if (Input.GetKey(KeyCode.A))
             {
@@ -78,6 +69,11 @@ namespace Platformer.Player
             }
 
             if (Input.GetKeyDown(KeyCode.W))
+            {
+                _isJumping = true;
+            }
+
+            if (Input.GetKeyDown(KeyCode.Q))
             {
                 _isJumping = true;
             }
@@ -98,46 +94,66 @@ namespace Platformer.Player
 
         private void OnCollided(GameObject collidedObject)
         {
-            if (collidedObject.TryGetComponent<IDamageSource>(out var damageSource))
+            if (collidedObject.TryGetComponent<IDamageSource>(out var damageSource) && !_isInvulnerable)
             {
-                var isDamageTaken = _health.TakeDamage(damageSource.Damage);
+                _healthManager.CurrentHealth -= damageSource.Damage;
+                Debug.Log(_isInvulnerable);
 
-                if (!isDamageTaken)
-                {
-                    return;
-                }
-
-                if (_health.IsDead)
+                if (_healthManager.CurrentHealth < 1)
                 {
                     // Die
+                    _playerPhysics.Disable();
                     _playerView.PlayDieAnimation(OnDieAnimationFinished);
                 }
                 else
                 {
                     // Hit
+                    _playerPhysics.Disable();
                     _playerView.PlayHitAnimation(OnHitAnimationFinished);
                 }
+
+                OnCurrentHealthChanged?.Invoke();
             }
+            //if (collidedObject.TryGetComponent<IDamageSource>(out var damageSource))
+            //{
+            //    var isDamageTaken = _health.TakeDamage(damageSource.Damage);
+
+            //    if (!isDamageTaken)
+            //    {
+            //        return;
+            //    }
+
+            //    if (_health.IsDead)
+            //    {
+            //        // Die
+            //        _playerView.PlayDieAnimation(OnDieAnimationFinished);
+            //    }
+            //    else
+            //    {
+            //        // Hit
+            //        _playerView.PlayHitAnimation(OnHitAnimationFinished);
+            //    }
+            //}
         }
 
-        private void OnHealthNumLivesChanged(int numLives)
-        {
-            OnNumLivesChanged?.Invoke(numLives);
-        }
+        //private void OnHealthNumLivesChanged(int numLives)
+        //{
+        //OnHealthNumLivesChanged?.Invoke(numLives);
+        //}
 
-        private void OnInvulnerabilityEnabled()
-        {
-            _playerPhysics.Disable();
+        //private void OnInvulnerabilityEnabled()
+        //{
+        //    _playerPhysics.Disable();
 
-            _invulnerabilityView.enabled = true;
-        }
+        //    _invulnerabilityView.enabled = true;
+        //}
 
-        private void OnInvulnerabilityDisabled()
-        {
-            _playerPhysics.Enable();
+        //private void OnInvulnerabilityDisabled()
+        //{
+        //    _playerPhysics.Enable();
 
-            _invulnerabilityView.enabled = false;
-        }
+        //    _invulnerabilityView.enabled = false;
+        //}
 
         private void OnHitAnimationFinished()
         {
@@ -153,14 +169,14 @@ namespace Platformer.Player
             OnPickableCollected?.Invoke(pickable);
         }
 
-        public void EnableInvulnerability()
-        {
-            _health.EnableInvulnerability();
-        }
+        //public void EnableInvulnerability()
+        //{
+        //    _health.EnableInvulnerability();
+        //}
 
-        public void Revive()
-        {
-            _health.Revive();
-        }
+        //public void Revive()
+        //{
+        //    _health.Revive();
+        //}
     }
 }
