@@ -17,6 +17,7 @@ namespace Platformer.Player
         public override Vector2 Velocity => _rigidbody2D.velocity;
         public override bool IsOnGround => _isOnGround;
 
+        // SoundManager.Sound_Manager.PlaySwordSwingSound();
 
         [SerializeField]
         private Rigidbody2D _rigidbody2D;
@@ -131,7 +132,7 @@ namespace Platformer.Player
             gameObject.layer = PlayerGhostLayerIndex;
         }
 
-        public override void Tick(bool isRunningLeft, bool isRunningRight, bool isJumping)
+        public override void Tick(bool isRunningLeft, bool isRunningRight, bool isJumping, bool isAttacking)
         {
             if (isRunningLeft)
             {

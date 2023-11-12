@@ -28,10 +28,16 @@ namespace Platformer.Player
         private string _dieAnimationName = "Death";
 
         [SerializeField]
+        private string _attackAnimationName1 = "Attack1";
+
+        [SerializeField]
         private float _hitAnimationDuration = 0.5f;
 
         [SerializeField]
         private float _dieAnimationDuration = 2f;
+
+        [SerializeField]
+        private float _attack1AnimationDuration = 0.5f;
 
 
         private Animator _animator;
@@ -88,6 +94,14 @@ namespace Platformer.Player
             }
         }
 
+        public override void PlayAttackAnimation(Action onAnimationFinished)
+        {
+            _isAnimationOverriden = true;
+            _onAnimationFinished = onAnimationFinished;
+
+            StartCoroutine(PlayAttackAnimationCoroutine());
+        }
+
         public override void PlayHitAnimation(Action onAnimationFinished)
         {
             _isAnimationOverriden = true;
@@ -121,6 +135,14 @@ namespace Platformer.Player
 
             yield return new WaitForSeconds(_dieAnimationDuration);
 
+            _isAnimationOverriden = false;
+            _onAnimationFinished?.Invoke();
+        }
+
+        private IEnumerator PlayAttackAnimationCoroutine()
+        {
+            _animator.Play(_attackAnimationName1);
+            yield return new WaitForSeconds(_attack1AnimationDuration);
             _isAnimationOverriden = false;
             _onAnimationFinished?.Invoke();
         }

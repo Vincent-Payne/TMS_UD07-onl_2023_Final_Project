@@ -23,6 +23,8 @@ public class SoundManager : MonoBehaviour
     private AudioClip _trampolineSound;
     [SerializeField]
     private AudioClip _enemyDeathSound;
+    [SerializeField]
+    private AudioClip _SwordSwingSound;
 
     private bool _soundEffectsSwitch = true;
     private bool _musicSwitch = true;
@@ -65,6 +67,11 @@ public class SoundManager : MonoBehaviour
     {
         if (_soundEffectsSwitch) { _audioSource.PlayOneShot(_enemyDeathSound); }
     }
+    public void PlaySwordSwingSound()
+    {
+        if (_soundEffectsSwitch) { _audioSource.PlayOneShot(_SwordSwingSound); }
+    }
+
     public void TurnOffSoundEffects()
     {
         _soundEffectsSwitch = false;

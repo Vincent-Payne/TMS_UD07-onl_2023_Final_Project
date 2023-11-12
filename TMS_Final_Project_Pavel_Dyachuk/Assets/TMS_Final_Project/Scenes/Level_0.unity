@@ -2119,6 +2119,7 @@ MonoBehaviour:
   _playerDeathSound: {fileID: 8300000, guid: be31a67645f72384db41e66b6e93c13d, type: 3}
   _trampolineSound: {fileID: 8300000, guid: 2c046a20a4ade834984ea406940c50b2, type: 3}
   _enemyDeathSound: {fileID: 8300000, guid: 2f3650cd73b5d954d96a0c1167650d91, type: 3}
+  _SwordSwingSound: {fileID: 8300000, guid: 795add7b6aa33fd4dae7efaf7287304c, type: 3}
 --- !u!4 &1346408882
 Transform:
   m_ObjectHideFlags: 0
@@ -4200,8 +4201,10 @@ MonoBehaviour:
   _idleAnimationName: Idle
   _hitAnimationName: Hit
   _dieAnimationName: Die
+  _attackAnimationName1: Attack1
   _hitAnimationDuration: 0.3
   _dieAnimationDuration: 2
+  _attack1AnimationDuration: 0.5
 --- !u!212 &4665502403641353602
 SpriteRenderer:
   m_ObjectHideFlags: 0

@@ -29,9 +29,15 @@ namespace Platformer.Player
         [SerializeField]
         private SpriteRenderer _invulnerabilityView;
 
+        [SerializeField]
+        private float _attackCooldown = 0.6f;
+        [SerializeField]
+        private float _invulnerabilityAfterHitCooldown = 1f;
+
         private bool _isRunningLeft;
         private bool _isRunningRight;
         private bool _isJumping;
+        private bool _isAttacking;
 
         public static event Action OnCurrentHealthChanged;
         public event Action OnDied;
@@ -84,17 +90,26 @@ namespace Platformer.Player
                 StartCoroutine(DisableInvulnerabilityByCherry(_invulnerabilityTime));
             }
 
+            if (Input.GetKey(KeyCode.Space) && !_isAttacking)
+            {
+                _isAttacking = true;
+                StartCoroutine(DisableAttackCooldown(_attackCooldown));
+                _playerView.PlayAttackAnimation(OnAttack1AnimationFinished);
+                SoundManager.Sound_Manager.PlaySwordSwingSound();
+            }
+
             _playerView.Tick(_playerPhysics.Velocity, _playerPhysics.IsOnGround);
         }
 
         private void FixedUpdate()
         {
-            _playerPhysics.Tick(_isRunningLeft, _isRunningRight, _isJumping);
+            _playerPhysics.Tick(_isRunningLeft, _isRunningRight, _isJumping, _isAttacking);
 
             // Reset input for movement
             _isRunningLeft = false;
             _isRunningRight = false;
             _isJumping = false;
+
         }
 
 
@@ -119,7 +134,7 @@ namespace Platformer.Player
                     _playerView.PlayHitAnimation(OnHitAnimationFinished);
                     SoundManager.Sound_Manager.PlayPlayerHitByEnemySound();
                     _invulnerableAfterHit = true;
-                    StartCoroutine(DisableInvulnerabilityAfterHitCoroutine());
+                    StartCoroutine(DisableInvulnerabilityAfterHitCoroutine(_invulnerabilityAfterHitCooldown));
                 }
 
                 OnCurrentHealthChanged?.Invoke();
@@ -128,6 +143,10 @@ namespace Platformer.Player
 
         private void OnHitAnimationFinished()
         {
+        }
+
+        private void OnAttack1AnimationFinished()
+        { 
         }
 
         private void OnDieAnimationFinished()
@@ -140,9 +159,9 @@ namespace Platformer.Player
             OnPickableCollected?.Invoke(pickable);
         }
 
-        private IEnumerator DisableInvulnerabilityAfterHitCoroutine()
+        private IEnumerator DisableInvulnerabilityAfterHitCoroutine(float time)
         {
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(time);
             _invulnerableAfterHit = false;
         }
 
@@ -151,6 +170,12 @@ namespace Platformer.Player
             yield return new WaitForSeconds(time);
             _invulnerableByCherry = false;
             _invulnerabilityView.enabled = false;
+        }
+
+        private IEnumerator DisableAttackCooldown(float time)
+        {
+            yield return new WaitForSeconds(time);
+            _isAttacking = false;
         }
     }
 }
