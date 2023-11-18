@@ -4544,7 +4544,7 @@ MonoBehaviour:
   _playerView: {fileID: 4665502403641353601}
   _playerPhysics: {fileID: 4665502403220749846}
   _invulnerabilityView: {fileID: 5741407081349562439}
-  _attackCooldown: 0.6
+  _attackCooldown: 0.51
   _invulnerabilityAfterHitCooldown: 1
 --- !u!4 &4665502405220783812
 Transform:

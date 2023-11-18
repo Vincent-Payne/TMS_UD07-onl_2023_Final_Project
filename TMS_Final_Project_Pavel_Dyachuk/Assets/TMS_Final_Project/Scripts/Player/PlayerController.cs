@@ -12,17 +12,18 @@ namespace Platformer.Player
     {
         [SerializeField]
         private HealthBarManager _healthBarManager;
+
         [SerializeField]
         private GameObject _attackArea;
+
         [SerializeField]
         private float _currentHealth;
+
         [SerializeField]
         private float _maxHealth;
+
         [SerializeField]
         private float _invulnerabilityTime;
-
-        private bool _invulnerableAfterHit;
-        private bool _invulnerableByCherry;
 
         [SerializeField]
         private PlayerView _playerView;
@@ -34,14 +35,17 @@ namespace Platformer.Player
         private SpriteRenderer _invulnerabilityView;
 
         [SerializeField]
-        private float _attackCooldown = 0.6f;
-        [SerializeField]
         private float _invulnerabilityAfterHitCooldown = 1f;
 
+        private bool _invulnerableAfterHit;
+        private bool _invulnerableByCherry;
         private bool _isRunningLeft;
         private bool _isRunningRight;
         private bool _isJumping;
         private bool _isAttacking;
+
+
+        private float _attackCooldown = 0.52f;
 
         public static event Action OnCurrentHealthChanged;
         public event Action OnDied;
@@ -97,7 +101,6 @@ namespace Platformer.Player
             if (Input.GetKey(KeyCode.Space) && !_isAttacking)
             {
                 PlayerAttack();
-
             }
 
             _playerView.Tick(_playerPhysics.Velocity, _playerPhysics.IsOnGround);
