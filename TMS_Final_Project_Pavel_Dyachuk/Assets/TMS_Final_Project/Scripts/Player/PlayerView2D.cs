@@ -42,6 +42,7 @@ namespace Platformer.Player
 
         private Animator _animator;
         private SpriteRenderer _spriteRenderer;
+        private GameObject _player2DGameObject;
 
         private bool _isAnimationOverriden;
         private Action _onAnimationFinished;
@@ -51,6 +52,7 @@ namespace Platformer.Player
         {
             _animator = GetComponent<Animator>();
             _spriteRenderer = GetComponent<SpriteRenderer>();
+            _player2DGameObject = transform.parent.gameObject;
         }
 
         public override void Tick(Vector2 velocity, bool isOnGround)
@@ -62,11 +64,13 @@ namespace Platformer.Player
 
             if (velocity.x > VELOCITY_THRESHOLD)
             {
-                _spriteRenderer.flipX = false;
+                _player2DGameObject.transform.localScale = new Vector3(1, 1, 1);
+                //_spriteRenderer.flipX = false;
             }
             else if (velocity.x < -VELOCITY_THRESHOLD)
             {
-                _spriteRenderer.flipX = true;
+                _player2DGameObject.transform.localScale = new Vector3 (-1, 1, 1);
+                //_spriteRenderer.flipX = true;
             }
 
             if (!isOnGround)
