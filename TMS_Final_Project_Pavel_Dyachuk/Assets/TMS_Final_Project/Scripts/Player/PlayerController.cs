@@ -4,6 +4,7 @@ using Platformer.Common;
 using Platformer.Pickables;
 using UnityEngine;
 using System.Collections;
+using Unity.VisualScripting;
 
 namespace Platformer.Player
 {
@@ -11,9 +12,12 @@ namespace Platformer.Player
     {
         [SerializeField]
         private HealthBarManager _healthBarManager;
-
         [SerializeField]
-        private float _currentHealth, _maxHealth;
+        private GameObject _attackArea;
+        [SerializeField]
+        private float _currentHealth;
+        [SerializeField]
+        private float _maxHealth;
         [SerializeField]
         private float _invulnerabilityTime;
 
@@ -92,10 +96,8 @@ namespace Platformer.Player
 
             if (Input.GetKey(KeyCode.Space) && !_isAttacking)
             {
-                _isAttacking = true;
-                StartCoroutine(DisableAttackCooldown(_attackCooldown));
-                _playerView.PlayAttackAnimation(OnAttack1AnimationFinished);
-                SoundManager.Sound_Manager.PlaySwordSwingSound();
+                PlayerAttack();
+
             }
 
             _playerView.Tick(_playerPhysics.Velocity, _playerPhysics.IsOnGround);
@@ -141,6 +143,20 @@ namespace Platformer.Player
             }
         }
 
+        private void OnTriggerEnter2D(Collider2D collider)
+        {
+            if (collider.tag == "Enemy") Destroy(collider.gameObject);
+        }
+
+        private void PlayerAttack()
+        {
+            _attackArea.SetActive(true);
+            _isAttacking = true;
+            StartCoroutine(DisableAttackCooldown(_attackCooldown));
+            _playerView.PlayAttackAnimation(OnAttack1AnimationFinished);
+            SoundManager.Sound_Manager.PlaySwordSwingSound();
+
+        }
         private void OnHitAnimationFinished()
         {
         }
@@ -176,6 +192,7 @@ namespace Platformer.Player
         {
             yield return new WaitForSeconds(time);
             _isAttacking = false;
+            _attackArea.SetActive(false);
         }
     }
 }
