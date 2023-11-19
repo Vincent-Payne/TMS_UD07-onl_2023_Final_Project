@@ -5,17 +5,15 @@ using UnityEngine;
 public class SoundManager : MonoBehaviour
 {
     public static SoundManager Sound_Manager;
+
+
+    [Header("World")]
+
     [SerializeField]
     private AudioSource _audioSource;
 
     [SerializeField]
     private AudioClip _levelSound;
-
-    [SerializeField]
-    private AudioClip _playerJumpSound;
-
-    [SerializeField]
-    private AudioClip _playerHitByEnemySound;
 
     [SerializeField]
     private AudioClip _pickGemSound;
@@ -24,10 +22,25 @@ public class SoundManager : MonoBehaviour
     private AudioClip _pickCherrySound;
 
     [SerializeField]
+    private AudioClip _trampolineSound;
+
+
+    [Header("Player")]
+
+    [SerializeField]
+    private AudioClip _playerJumpSound;
+
+    [SerializeField]
+    private AudioClip _playerHitByEnemySound;
+
+    [SerializeField]
     private AudioClip _playerDeathSound;
 
     [SerializeField]
-    private AudioClip _trampolineSound;
+    private AudioClip _swordSwingSound;
+
+
+    [Header("Enemies")]
 
     [SerializeField]
     private AudioClip _enemyDeathSound;
@@ -36,10 +49,10 @@ public class SoundManager : MonoBehaviour
     private AudioClip[] _enemyBatDeathSound;
 
     [SerializeField]
-    private AudioClip _swordSwingSound;
+    private AudioClip _enemyHitSound;
 
     [SerializeField]
-    private AudioClip _enemyHitSound;
+    private AudioClip[] _enemyBatHitSound;
 
     private bool _soundEffectsSwitch = true;
     private bool _musicSwitch = true;
@@ -88,6 +101,10 @@ public class SoundManager : MonoBehaviour
     public void PlayEnemyBatDeathSound()
     {
         if (_soundEffectsSwitch) { _audioSource.PlayOneShot(_enemyBatDeathSound[Random.Range(0, 3)]); }
+    }
+    public void PlayEnemyBatHitSound()
+    {
+        if (_soundEffectsSwitch) { _audioSource.PlayOneShot(_enemyBatHitSound[Random.Range(0, 2)]); }
     }
     public void PlaySwordSwingSound()
     {

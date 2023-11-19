@@ -12,5 +12,9 @@ namespace Platformer.Enemies
         {
             SoundManager.Sound_Manager.PlayEnemyBatDeathSound();
         }
+        public override void PlayEnemyHitSound()
+        {
+            SoundManager.Sound_Manager.PlayEnemyBatHitSound();
+        }
     }
 }
