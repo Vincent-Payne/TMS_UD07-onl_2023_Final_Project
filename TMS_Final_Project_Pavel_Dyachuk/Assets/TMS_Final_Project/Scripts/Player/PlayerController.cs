@@ -113,6 +113,7 @@ namespace Platformer.Player
             {
                 if (_playerCherryBarManager.CurrentCherry != 0 && !_invulnerableByCherry)
                 {
+                    SoundManager.Sound_Manager.PlayPlayerUseCherrySound();
                     _invulnerableByCherry = true;
                     _invulnerabilityView.enabled = true;
                     StartCoroutine(DisableInvulnerabilityByCherry(_invulnerabilityTime));

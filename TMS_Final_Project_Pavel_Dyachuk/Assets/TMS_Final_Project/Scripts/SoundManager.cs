@@ -37,7 +37,10 @@ public class SoundManager : MonoBehaviour
     private AudioClip _playerDeathSound;
 
     [SerializeField]
-    private AudioClip _swordSwingSound;
+    private AudioClip _playerSwordSwingSound;
+
+    [SerializeField]
+    private AudioClip _playerUseCherrySound;
 
 
     [Header("Enemies")]
@@ -82,6 +85,10 @@ public class SoundManager : MonoBehaviour
     {
         if(_soundEffectsSwitch) { _audioSource.PlayOneShot(_pickCherrySound);}
     }
+    public void PlayPlayerUseCherrySound()
+    {
+        if (_soundEffectsSwitch) { _audioSource.PlayOneShot(_playerUseCherrySound); }
+    }
     public void PlayPlayerDeathSound()
     {
         if (_soundEffectsSwitch) { _audioSource.PlayOneShot(_playerDeathSound);}
@@ -108,7 +115,7 @@ public class SoundManager : MonoBehaviour
     }
     public void PlaySwordSwingSound()
     {
-        if (_soundEffectsSwitch) { _audioSource.PlayOneShot(_swordSwingSound); }
+        if (_soundEffectsSwitch) { _audioSource.PlayOneShot(_playerSwordSwingSound); }
     }
 
     public void TurnOffSoundEffects()

@@ -2044,12 +2044,13 @@ MonoBehaviour:
   _audioSource: {fileID: 1346408883}
   _levelSound: {fileID: 0}
   _pickGemSound: {fileID: 8300000, guid: b293d379b38db924382ba539683984b8, type: 3}
-  _pickCherrySound: {fileID: 8300000, guid: 9f33a085cec9ce94e893b41f551fc999, type: 3}
+  _pickCherrySound: {fileID: 8300000, guid: 2976f17f64c1dc14ca56e5dd9f3f0c09, type: 3}
   _trampolineSound: {fileID: 8300000, guid: 2c046a20a4ade834984ea406940c50b2, type: 3}
   _playerJumpSound: {fileID: 8300000, guid: 2736716fc04b4014e92e6f82cfd0c762, type: 3}
   _playerHitByEnemySound: {fileID: 8300000, guid: a31ba5bb856a7b149835d4275910f4ef, type: 3}
   _playerDeathSound: {fileID: 8300000, guid: be31a67645f72384db41e66b6e93c13d, type: 3}
-  _swordSwingSound: {fileID: 8300000, guid: 795add7b6aa33fd4dae7efaf7287304c, type: 3}
+  _playerSwordSwingSound: {fileID: 8300000, guid: 795add7b6aa33fd4dae7efaf7287304c, type: 3}
+  _playerUseCherrySound: {fileID: 8300000, guid: 9f33a085cec9ce94e893b41f551fc999, type: 3}
   _enemyDeathSound: {fileID: 0}
   _enemyBatDeathSound:
   - {fileID: 8300000, guid: 9016fcf3ffd655e42b61c8a0fca60b04, type: 3}
