@@ -1,3 +1,4 @@
+using Platformer;
 using Platformer.Player;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,12 +14,12 @@ public class PlayerCherryBarManager : MonoBehaviour
 
     private void OnEnable()
     {
-        PlayerController.OnCurrentCherryChanged += DrawCherries;
+        GameManager.OnCurrentCherryChanged += DrawCherries;
     }
 
     private void OnDisable()
     {
-        PlayerController.OnCurrentCherryChanged -= DrawCherries;
+        GameManager.OnCurrentCherryChanged -= DrawCherries;
     }
     public int CurrentCherry
     {
@@ -35,9 +36,6 @@ public class PlayerCherryBarManager : MonoBehaviour
     {
         Debug.Log(_currentCherry);
         ClearCherryBar();
-        //Determine how much cherries to draw
-        //int maxCherryRemainder = _maxCherry % 2;
-        //int cherriesToMake = (int)((_maxCherry / 2) + maxCherryRemainder);
         for (int i = 0; i < _maxCherry; i++)
         {
             CreateEmptyCherry();

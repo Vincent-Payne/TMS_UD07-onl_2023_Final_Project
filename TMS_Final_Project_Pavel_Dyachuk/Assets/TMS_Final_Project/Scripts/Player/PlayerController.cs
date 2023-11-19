@@ -13,10 +13,10 @@ namespace Platformer.Player
         [Header("Health System")]
         [SerializeField]
         private PlayerHealthBarManager _playerHealthBarManager;
-        
+
         [SerializeField]
         private float _currentHealth;
-        
+
         [SerializeField]
         private float _maxHealth;
 
@@ -59,14 +59,14 @@ namespace Platformer.Player
         private bool _isRunningRight;
         private bool _isJumping;
 
-        public static event Action OnCurrentCherryChanged;
+
         public static event Action OnCurrentHealthChanged;
         public event Action OnDied;
         public event Action<IPickable> OnPickableCollected;
 
         private void Awake()
         {
-             _playerPhysics.OnCollided += OnCollided;
+            _playerPhysics.OnCollided += OnCollided;
         }
 
         private void Start()
@@ -80,12 +80,14 @@ namespace Platformer.Player
             _playerCherryBarManager.DrawCherries();
 
             _playerPhysics.OnCollided += OnCollided;
+            GameManager.OnCurrentCherryChanged += CherryIncrease;
             _invulnerabilityView.enabled = false;
         }
 
         private void OnDestroy()
         {
             _playerPhysics.OnCollided -= OnCollided;
+            GameManager.OnCurrentCherryChanged -= CherryIncrease;
         }
 
 
@@ -109,9 +111,13 @@ namespace Platformer.Player
 
             if (Input.GetKeyDown(KeyCode.Q))
             {
-                _invulnerableByCherry = true;
-                _invulnerabilityView.enabled = true;
-                StartCoroutine(DisableInvulnerabilityByCherry(_invulnerabilityTime));
+                if (_playerCherryBarManager.CurrentCherry != 0 && !_invulnerableByCherry)
+                {
+                    _invulnerableByCherry = true;
+                    _invulnerabilityView.enabled = true;
+                    StartCoroutine(DisableInvulnerabilityByCherry(_invulnerabilityTime));
+                    CherryDecrease();
+                }
             }
 
             if (Input.GetKey(KeyCode.Space))
@@ -160,28 +166,34 @@ namespace Platformer.Player
             }
         }
 
+        private void CherryIncrease()
+        {
+            if (_playerCherryBarManager.CurrentCherry < _playerCherryBarManager.MaxCherry) _playerCherryBarManager.CurrentCherry++;
+            else return;
+            _playerCherryBarManager.DrawCherries();
+        }
+        private void CherryDecrease()
+        {
+            _playerCherryBarManager.CurrentCherry--;
+            _playerCherryBarManager.DrawCherries();
+        }
+
         private void OnHitAnimationFinished()
         {
         }
-
-
-
         private void OnDieAnimationFinished()
         {
             OnDied?.Invoke();
         }
-
         public void Pick(IPickable pickable)
         {
             OnPickableCollected?.Invoke(pickable);
         }
-
         private IEnumerator DisableInvulnerabilityAfterHitCoroutine(float time)
         {
             yield return new WaitForSeconds(time);
             _invulnerableAfterHit = false;
         }
-
         private IEnumerator DisableInvulnerabilityByCherry(float time)
         {
             yield return new WaitForSeconds(time);

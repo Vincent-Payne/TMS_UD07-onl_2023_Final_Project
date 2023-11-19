@@ -4319,7 +4319,7 @@ MonoBehaviour:
   _maxHealth: 2
   _playerCherryBarManager: {fileID: 1657529990}
   _currentCherry: 0
-  _maxCherry: 3
+  _maxCherry: 2
   _invulnerabilityTime: 5
   _invulnerabilityView: {fileID: 5741407081349562439}
   _invulnerabilityAfterHitCooldown: 1

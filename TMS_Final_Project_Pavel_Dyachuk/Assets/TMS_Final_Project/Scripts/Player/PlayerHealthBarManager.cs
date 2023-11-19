@@ -6,7 +6,6 @@ using UnityEngine;
 public class PlayerHealthBarManager : MonoBehaviour
 {
     private float _currentHealth, _maxHealth;
-
     [SerializeField]
     private GameObject _heartPrefab;
 
@@ -21,7 +20,6 @@ public class PlayerHealthBarManager : MonoBehaviour
     {
         PlayerController.OnCurrentHealthChanged -= DrawHearts;
     }
-
     public float CurrentHealth
     {
         get { return _currentHealth; }

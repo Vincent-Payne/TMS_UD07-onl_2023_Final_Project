@@ -4,6 +4,7 @@ using Platformer.Pickables;
 using Platformer.Player;
 using UnityEditor;
 using UnityEngine;
+using System;
 
 namespace Platformer
 {
@@ -20,6 +21,7 @@ namespace Platformer
 
         [SerializeField]
         private IntEventChannel _numLivesChannel;
+        public static event Action OnCurrentCherryChanged;
 
         private int _score;
 
@@ -39,11 +41,6 @@ namespace Platformer
             _player.OnPickableCollected -= OnPickableCollected;
         }
 
-        private void OnHealthNumLivesChanged(int numLives)
-        {
-            _numLivesChannel.Publish(numLives);
-        }
-
         private void OnPickableCollected(IPickable pickable)
         {
             if (pickable == null)
@@ -53,9 +50,10 @@ namespace Platformer
 
             if (pickable is CherryOfInvulnerability)
             {
-                    pickable.Pick(_player.gameObject);
-                    SoundManager.Sound_Manager.PlayPickCherrySound();
-                    _score += pickable.ScoreIncrement;
+                pickable.Pick(_player.gameObject);
+                SoundManager.Sound_Manager.PlayPickCherrySound();
+                _score += pickable.ScoreIncrement;
+                OnCurrentCherryChanged?.Invoke();
             }
             else
             {
