@@ -1,4 +1,6 @@
+using Platformer.Enemies;
 using Platformer.Player;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,11 +14,21 @@ public class PlayerAttackController : MonoBehaviour
     private PlayerView _playerView;
 
     [SerializeField]
-    private float _playerAttackDamage = 1f;
+    private int _playerAttackDamage = 1;
+
+    private void OnEnable()
+    {
+        _attackArea.GetComponent<PlayerAttackArea>().OnEnemyAttacked += DamageEnemy;
+    }
+
+    private void OnDisable()
+    {
+        _attackArea.GetComponent<PlayerAttackArea>().OnEnemyAttacked -= DamageEnemy;
+    }
 
     private float _attackCooldown = 0.52f;
     private bool _isAttacking;
-
+    public int Damage => _playerAttackDamage;
     public void PlayerAttack()
     {
         if (!_isAttacking)
@@ -28,6 +40,11 @@ public class PlayerAttackController : MonoBehaviour
             SoundManager.Sound_Manager.PlaySwordSwingSound();
         }
         else return;
+    }
+
+    private void DamageEnemy(Collider2D enemyCollider)
+    {
+        enemyCollider.GetComponent<Enemy>().EnemyTakeDamage(_playerAttackDamage);
     }
 
     private IEnumerator DisableAttackCooldown(float time)
