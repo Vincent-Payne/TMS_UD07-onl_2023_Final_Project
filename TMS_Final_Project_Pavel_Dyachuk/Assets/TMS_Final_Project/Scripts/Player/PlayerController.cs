@@ -20,6 +20,16 @@ namespace Platformer.Player
         [SerializeField]
         private float _maxHealth;
 
+        [Header("Cherry System")]
+        [SerializeField]
+        private PlayerCherryBarManager _playerCherryBarManager;
+
+        [SerializeField]
+        private int _currentCherry;
+
+        [SerializeField]
+        private int _maxCherry;
+
         [Header("Invulnerability System")]
         [SerializeField]
         private float _invulnerabilityTime;
@@ -49,6 +59,7 @@ namespace Platformer.Player
         private bool _isRunningRight;
         private bool _isJumping;
 
+        public static event Action OnCurrentCherryChanged;
         public static event Action OnCurrentHealthChanged;
         public event Action OnDied;
         public event Action<IPickable> OnPickableCollected;
@@ -63,6 +74,11 @@ namespace Platformer.Player
             _playerHealthBarManager.CurrentHealth = _currentHealth;
             _playerHealthBarManager.MaxHealth = _maxHealth;
             _playerHealthBarManager.DrawHearts();
+
+            _playerCherryBarManager.CurrentCherry = _currentCherry;
+            _playerCherryBarManager.MaxCherry = _maxCherry;
+            _playerCherryBarManager.DrawCherries();
+
             _playerPhysics.OnCollided += OnCollided;
             _invulnerabilityView.enabled = false;
         }
@@ -144,10 +160,6 @@ namespace Platformer.Player
             }
         }
 
-        //private void OnTriggerEnter2D(Collider2D collider)
-        //{
-        //    if (collider.tag == "Enemy") Destroy(collider.gameObject);
-        //}
         private void OnHitAnimationFinished()
         {
         }

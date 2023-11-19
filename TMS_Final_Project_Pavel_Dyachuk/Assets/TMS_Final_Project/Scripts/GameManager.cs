@@ -53,13 +53,9 @@ namespace Platformer
 
             if (pickable is CherryOfInvulnerability)
             {
-                //if (!_player.IsInvulnerable)
-                //{
-                //    _player.EnableInvulnerability();
-                //    pickable.Pick(_player.gameObject);
-                //    SoundManager.Sound_Manager.PlayPickCherrySound();
-                //    _score += pickable.ScoreIncrement;
-                //}
+                    pickable.Pick(_player.gameObject);
+                    SoundManager.Sound_Manager.PlayPickCherrySound();
+                    _score += pickable.ScoreIncrement;
             }
             else
             {

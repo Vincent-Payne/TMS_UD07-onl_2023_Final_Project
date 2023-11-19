@@ -34,7 +34,6 @@ public class PlayerHealthBarManager : MonoBehaviour
     }
     public void DrawHearts()
     {
-        Debug.Log(_currentHealth);
         ClearHealthBar();
         //Determine how much hearts to draw
         float maxHealthRemainder = _maxHealth % 2;
