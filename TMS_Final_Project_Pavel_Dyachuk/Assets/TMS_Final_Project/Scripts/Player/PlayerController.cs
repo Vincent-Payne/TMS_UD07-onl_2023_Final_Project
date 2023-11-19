@@ -12,7 +12,7 @@ namespace Platformer.Player
     {
         [Header("Health System")]
         [SerializeField]
-        private HealthBarManager _playerHealthBarManager;
+        private PlayerHealthBarManager _playerHealthBarManager;
         
         [SerializeField]
         private float _currentHealth;

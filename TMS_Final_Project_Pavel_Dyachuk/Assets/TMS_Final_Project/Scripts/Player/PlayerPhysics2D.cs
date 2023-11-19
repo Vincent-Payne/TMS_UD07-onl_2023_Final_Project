@@ -17,8 +17,6 @@ namespace Platformer.Player
         public override Vector2 Velocity => _rigidbody2D.velocity;
         public override bool IsOnGround => _isOnGround;
 
-        // SoundManager.Sound_Manager.PlaySwordSwingSound();
-
         [SerializeField]
         private Rigidbody2D _rigidbody2D;
 
@@ -41,7 +39,7 @@ namespace Platformer.Player
         private float _jumpForce = 1200f;
 
 
-        private Collider2D _collider2D;
+        //private Collider2D _collider2D;
 
         private bool _isOnGround;
 
@@ -53,7 +51,7 @@ namespace Platformer.Player
             PlayerLayerIndex = LayerMask.NameToLayer("Player");
             PlayerGhostLayerIndex = LayerMask.NameToLayer("PlayerGhost");
 
-            _collider2D = GetComponent<Collider2D>();
+            //_collider2D = GetComponent<Collider2D>();
         }
 
         private void OnTriggerEnter2D(Collider2D other)

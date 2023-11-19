@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HealthHeart : MonoBehaviour
+public class PlayerHealthHeart : MonoBehaviour
 {
     [SerializeField]
     private Sprite fullHeart, emptyHeart, halfHeart;

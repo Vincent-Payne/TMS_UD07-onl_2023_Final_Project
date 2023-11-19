@@ -3,14 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HealthBarManager : MonoBehaviour
+public class PlayerHealthBarManager : MonoBehaviour
 {
     private float _currentHealth, _maxHealth;
 
     [SerializeField]
     private GameObject _heartPrefab;
 
-    private List<HealthHeart> hearts = new List<HealthHeart>();
+    private List<PlayerHealthHeart> hearts = new List<PlayerHealthHeart>();
 
     private void OnEnable()
     {
@@ -56,7 +56,7 @@ public class HealthBarManager : MonoBehaviour
         GameObject newHeart = Instantiate(_heartPrefab);
         newHeart.transform.SetParent(transform);
 
-        HealthHeart heartComponent = newHeart.GetComponent<HealthHeart>();
+        PlayerHealthHeart heartComponent = newHeart.GetComponent<PlayerHealthHeart>();
         heartComponent.SetHeartImage(HeartStatus.Empty);
         hearts.Add(heartComponent);
     }
@@ -67,7 +67,7 @@ public class HealthBarManager : MonoBehaviour
         {
             Destroy(t.gameObject);
         }
-        hearts = new List<HealthHeart>();
+        hearts = new List<PlayerHealthHeart>();
     }
 
 }
