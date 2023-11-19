@@ -117,7 +117,7 @@ GameObject:
   - component: {fileID: 5488191236028817765}
   - component: {fileID: 5488191236028817764}
   - component: {fileID: 7431157732750874913}
-  - component: {fileID: 8470158853546856471}
+  - component: {fileID: 1249021207647248421}
   m_Layer: 0
   m_Name: Bat
   m_TagString: Enemy
@@ -181,7 +181,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _waypoints: []
   _moveSpeed: 1.5
---- !u!114 &8470158853546856471
+--- !u!114 &1249021207647248421
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -190,7 +190,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 5488191236028817762}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e709547702d14c8ba595ad0ccb944432, type: 3}
+  m_Script: {fileID: 11500000, guid: f14345ddc406a144aae707e744ede682, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _damage: 1
+  _enemyHealth: 1

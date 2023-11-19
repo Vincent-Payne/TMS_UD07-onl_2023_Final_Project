@@ -20,9 +20,19 @@ namespace Platformer.Enemies
             Debug.Log(_enemyHealth);
             if (_enemyHealth < 1) 
             {
-                SoundManager.Sound_Manager.PlayEnemyDeathSound();
+                PlayEnemyDeathSound();
                 Destroy(this.gameObject); 
             }
+        }
+        public virtual void PlayEnemyDeathSound()
+        {
+            SoundManager.Sound_Manager.PlayEnemyDeathSound();
+
+        }
+        public virtual void PlayEnemyHithSound()
+        {
+            SoundManager.Sound_Manager.PlayEnemyDeathSound();
+
         }
     }
 }

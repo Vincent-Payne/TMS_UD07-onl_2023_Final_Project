@@ -7,24 +7,39 @@ public class SoundManager : MonoBehaviour
     public static SoundManager Sound_Manager;
     [SerializeField]
     private AudioSource _audioSource;
+
     [SerializeField]
     private AudioClip _levelSound;
+
     [SerializeField]
     private AudioClip _playerJumpSound;
+
     [SerializeField]
     private AudioClip _playerHitByEnemySound;
+
     [SerializeField]
     private AudioClip _pickGemSound;
+
     [SerializeField]
     private AudioClip _pickCherrySound;
+
     [SerializeField]
     private AudioClip _playerDeathSound;
+
     [SerializeField]
     private AudioClip _trampolineSound;
+
     [SerializeField]
     private AudioClip _enemyDeathSound;
+
     [SerializeField]
-    private AudioClip _SwordSwingSound;
+    private AudioClip[] _enemyBatDeathSound;
+
+    [SerializeField]
+    private AudioClip _swordSwingSound;
+
+    [SerializeField]
+    private AudioClip _enemyHitSound;
 
     private bool _soundEffectsSwitch = true;
     private bool _musicSwitch = true;
@@ -62,14 +77,21 @@ public class SoundManager : MonoBehaviour
     {
         if (_soundEffectsSwitch) { _audioSource.PlayOneShot(_trampolineSound); }
     }
-
     public void PlayEnemyDeathSound()
     {
         if (_soundEffectsSwitch) { _audioSource.PlayOneShot(_enemyDeathSound); }
     }
+    public void PlayEnemyHitSound()
+    {
+        if (_soundEffectsSwitch) { _audioSource.PlayOneShot(_enemyHitSound); }
+    }
+    public void PlayEnemyBatDeathSound()
+    {
+        if (_soundEffectsSwitch) { _audioSource.PlayOneShot(_enemyBatDeathSound[Random.Range(0, 3)]); }
+    }
     public void PlaySwordSwingSound()
     {
-        if (_soundEffectsSwitch) { _audioSource.PlayOneShot(_SwordSwingSound); }
+        if (_soundEffectsSwitch) { _audioSource.PlayOneShot(_swordSwingSound); }
     }
 
     public void TurnOffSoundEffects()

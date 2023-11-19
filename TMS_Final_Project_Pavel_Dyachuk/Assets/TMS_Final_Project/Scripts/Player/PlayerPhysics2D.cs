@@ -59,7 +59,6 @@ namespace Platformer.Player
             if (other.gameObject.CompareTag(_jumpVulnerableEnemyTag) && (gameObject.transform.position.y > other.transform.position.y))
             {
                 Destroy(other.gameObject);
-                SoundManager.Sound_Manager.PlayEnemyDeathSound();
                 _rigidbody2D.velocity= Vector2.zero;
                 _rigidbody2D.velocity = Vector3.zero;
                 _rigidbody2D.angularVelocity = 0;
