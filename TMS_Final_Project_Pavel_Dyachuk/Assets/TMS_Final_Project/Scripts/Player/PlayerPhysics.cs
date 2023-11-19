@@ -10,6 +10,6 @@ namespace Platformer.Player
         public abstract bool IsOnGround { get; }
         public abstract void Enable();
         public abstract void Disable();
-        public abstract void Tick(bool isRunningLeft, bool isRunningRight, bool isJumping, bool isAttacking);
+        public abstract void Tick(bool isRunningLeft, bool isRunningRight, bool isJumping);
     }
 }

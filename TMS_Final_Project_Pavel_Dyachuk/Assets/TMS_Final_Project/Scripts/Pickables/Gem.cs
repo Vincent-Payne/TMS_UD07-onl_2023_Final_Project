@@ -20,7 +20,8 @@ namespace Platformer.Pickables
         private void OnTriggerEnter2D(Collider2D other)
         {
             var playerController = other.gameObject.GetComponentInParent<PlayerController>();
-            if (playerController != null)
+
+            if (other.tag == "Player")
             {
                 playerController.Pick(this);
             }

@@ -132,7 +132,7 @@ namespace Platformer.Player
             gameObject.layer = PlayerGhostLayerIndex;
         }
 
-        public override void Tick(bool isRunningLeft, bool isRunningRight, bool isJumping, bool isAttacking)
+        public override void Tick(bool isRunningLeft, bool isRunningRight, bool isJumping)
         {
             if (isRunningLeft)
             {

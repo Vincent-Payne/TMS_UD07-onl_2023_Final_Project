@@ -10,26 +10,19 @@ namespace Platformer.Player
 {
     public class PlayerController : MonoBehaviour, IDamageable
     {
+        [Header("Health System")]
         [SerializeField]
-        private HealthBarManager _healthBarManager;
-
-        [SerializeField]
-        private GameObject _attackArea;
-
+        private HealthBarManager _playerHealthBarManager;
+        
         [SerializeField]
         private float _currentHealth;
-
+        
         [SerializeField]
         private float _maxHealth;
 
+        [Header("Invulnerability System")]
         [SerializeField]
         private float _invulnerabilityTime;
-
-        [SerializeField]
-        private PlayerView _playerView;
-
-        [SerializeField]
-        private PlayerPhysics _playerPhysics;
 
         [SerializeField]
         private SpriteRenderer _invulnerabilityView;
@@ -37,15 +30,24 @@ namespace Platformer.Player
         [SerializeField]
         private float _invulnerabilityAfterHitCooldown = 1f;
 
+        [Header("Combat System")]
+        [SerializeField]
+        private PlayerAttackController _playerAttackController;
+
+        [Header("Other")]
+        [SerializeField]
+        private PlayerView _playerView;
+
+        [SerializeField]
+        private PlayerPhysics _playerPhysics;
+
+
+
         private bool _invulnerableAfterHit;
         private bool _invulnerableByCherry;
         private bool _isRunningLeft;
         private bool _isRunningRight;
         private bool _isJumping;
-        private bool _isAttacking;
-
-
-        private float _attackCooldown = 0.52f;
 
         public static event Action OnCurrentHealthChanged;
         public event Action OnDied;
@@ -58,13 +60,11 @@ namespace Platformer.Player
 
         private void Start()
         {
-            _healthBarManager.CurrentHealth = _currentHealth;
-            _healthBarManager.MaxHealth = _maxHealth;
-            _healthBarManager.DrawHearts();
+            _playerHealthBarManager.CurrentHealth = _currentHealth;
+            _playerHealthBarManager.MaxHealth = _maxHealth;
+            _playerHealthBarManager.DrawHearts();
             _playerPhysics.OnCollided += OnCollided;
             _invulnerabilityView.enabled = false;
-
-
         }
 
         private void OnDestroy()
@@ -98,9 +98,9 @@ namespace Platformer.Player
                 StartCoroutine(DisableInvulnerabilityByCherry(_invulnerabilityTime));
             }
 
-            if (Input.GetKey(KeyCode.Space) && !_isAttacking)
+            if (Input.GetKey(KeyCode.Space))
             {
-                PlayerAttack();
+                _playerAttackController.PlayerAttack();
             }
 
             _playerView.Tick(_playerPhysics.Velocity, _playerPhysics.IsOnGround);
@@ -108,13 +108,11 @@ namespace Platformer.Player
 
         private void FixedUpdate()
         {
-            _playerPhysics.Tick(_isRunningLeft, _isRunningRight, _isJumping, _isAttacking);
-
+            _playerPhysics.Tick(_isRunningLeft, _isRunningRight, _isJumping);
             // Reset input for movement
             _isRunningLeft = false;
             _isRunningRight = false;
             _isJumping = false;
-
         }
 
 
@@ -122,10 +120,10 @@ namespace Platformer.Player
         {
             if (collidedObject.TryGetComponent<IDamageSource>(out var damageSource) && !_invulnerableAfterHit && !_invulnerableByCherry)
             {
-                _healthBarManager.CurrentHealth -= damageSource.Damage;
+                _playerHealthBarManager.CurrentHealth -= damageSource.Damage;
                 Debug.Log(_invulnerableAfterHit);
 
-                if (_healthBarManager.CurrentHealth < 1)
+                if (_playerHealthBarManager.CurrentHealth < 1)
                 {
                     // Death
                     _playerPhysics.Disable();
@@ -146,27 +144,15 @@ namespace Platformer.Player
             }
         }
 
-        private void OnTriggerEnter2D(Collider2D collider)
-        {
-            if (collider.tag == "Enemy") Destroy(collider.gameObject);
-        }
-
-        private void PlayerAttack()
-        {
-            _attackArea.SetActive(true);
-            _isAttacking = true;
-            StartCoroutine(DisableAttackCooldown(_attackCooldown));
-            _playerView.PlayAttackAnimation(OnAttack1AnimationFinished);
-            SoundManager.Sound_Manager.PlaySwordSwingSound();
-
-        }
+        //private void OnTriggerEnter2D(Collider2D collider)
+        //{
+        //    if (collider.tag == "Enemy") Destroy(collider.gameObject);
+        //}
         private void OnHitAnimationFinished()
         {
         }
 
-        private void OnAttack1AnimationFinished()
-        { 
-        }
+
 
         private void OnDieAnimationFinished()
         {
@@ -189,13 +175,6 @@ namespace Platformer.Player
             yield return new WaitForSeconds(time);
             _invulnerableByCherry = false;
             _invulnerabilityView.enabled = false;
-        }
-
-        private IEnumerator DisableAttackCooldown(float time)
-        {
-            yield return new WaitForSeconds(time);
-            _isAttacking = false;
-            _attackArea.SetActive(false);
         }
     }
 }

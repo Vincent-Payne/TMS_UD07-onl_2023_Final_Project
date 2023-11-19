@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Platformer.Enemies
 {
-    public class Bat : MonoBehaviour, IDamageSource
+    public class Enemy : MonoBehaviour, IDamageSource
     {
         [SerializeField]
         private int _damage;
