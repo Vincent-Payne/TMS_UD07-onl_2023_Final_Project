@@ -4550,9 +4550,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerHealthBarManager: {fileID: 973033343}
-  _currentHealth: 4
-  _maxHealth: 4
-  _invulnerabilityTime: 2
+  _currentHealth: 2
+  _maxHealth: 2
+  _invulnerabilityTime: 5
   _invulnerabilityView: {fileID: 5741407081349562439}
   _invulnerabilityAfterHitCooldown: 1
   _playerAttackController: {fileID: 4665502405220783813}
