@@ -109,6 +109,11 @@ namespace Platformer.Player
             OnCollided?.Invoke(col.gameObject);
         }
 
+        private void OnTriggerStay2D(Collider2D col)
+        {
+            OnCollided?.Invoke(col.gameObject);
+        }
+
         private void OnCollisionExit2D(Collision2D other)
         {
             if (other.gameObject.CompareTag(_groundTag))

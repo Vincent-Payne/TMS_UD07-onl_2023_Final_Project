@@ -148,7 +148,6 @@ namespace Platformer.Player
             if (collidedObject.TryGetComponent<IDamageSource>(out var damageSource) && !_invulnerableAfterHit && !_invulnerableByCherry && !_isDead)
             {
                 _playerHealthBarManager.CurrentHealth -= damageSource.Damage;
-                //Debug.Log(_invulnerableAfterHit);
 
                 if (_playerHealthBarManager.CurrentHealth < 1)
                 {
