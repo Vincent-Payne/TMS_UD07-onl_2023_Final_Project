@@ -17,7 +17,7 @@ namespace Platformer.Enemies
         public void EnemyTakeDamage(int damage)
         {
             _enemyHealth -= damage;
-            Debug.Log(_enemyHealth);
+            //Debug.Log(_enemyHealth);
             if (_enemyHealth < 1)
             {
                 PlayEnemyDeathSound();

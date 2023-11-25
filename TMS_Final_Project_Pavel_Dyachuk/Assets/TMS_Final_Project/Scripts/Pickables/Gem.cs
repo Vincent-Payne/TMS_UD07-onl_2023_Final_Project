@@ -19,7 +19,7 @@ namespace Platformer.Pickables
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            Debug.Log("Gem");
+            //Debug.Log("Gem");
             var playerController = other.gameObject.GetComponentInParent<PlayerController>();
             if (other.tag == "Player")
             {

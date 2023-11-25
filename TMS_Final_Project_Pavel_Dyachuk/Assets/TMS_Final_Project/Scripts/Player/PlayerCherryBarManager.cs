@@ -34,7 +34,7 @@ public class PlayerCherryBarManager : MonoBehaviour
 
     public void DrawCherries()
     {
-        Debug.Log(_currentCherry);
+        //Debug.Log(_currentCherry);
         ClearCherryBar();
         for (int i = 0; i < _maxCherry; i++)
         {
