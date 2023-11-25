@@ -56,18 +56,19 @@ namespace Platformer.Player
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (other.gameObject.CompareTag(_jumpVulnerableEnemyTag) && (gameObject.transform.position.y > other.transform.position.y))
-            {
-                Destroy(other.gameObject);
-                _rigidbody2D.velocity= Vector2.zero;
-                _rigidbody2D.velocity = Vector3.zero;
-                _rigidbody2D.angularVelocity = 0;
-                _rigidbody2D.AddForce(new Vector2(0f, _jumpForce), ForceMode2D.Impulse);
-            }
-            else
-            {
-                OnCollided?.Invoke(other.gameObject);
-            }
+            OnCollided?.Invoke(other.gameObject);
+            //if (other.gameObject.CompareTag(_jumpVulnerableEnemyTag) && (gameObject.transform.position.y > other.transform.position.y))
+            //{
+            //    Destroy(other.gameObject);
+            //    _rigidbody2D.velocity = Vector2.zero;
+            //    _rigidbody2D.velocity = Vector3.zero;
+            //    _rigidbody2D.angularVelocity = 0;
+            //    _rigidbody2D.AddForce(new Vector2(0f, _jumpForce), ForceMode2D.Impulse);
+            //}
+            //else
+            //{
+            //    OnCollided?.Invoke(other.gameObject);
+            //}
         }
 
         private void OnTriggerExit2D(Collider2D other)
@@ -100,6 +101,11 @@ namespace Platformer.Player
                 _isOnGround = true;
             }
 
+            OnCollided?.Invoke(col.gameObject);
+        }
+
+        private void OnCollisionStay2D(Collision2D col)
+        {
             OnCollided?.Invoke(col.gameObject);
         }
 

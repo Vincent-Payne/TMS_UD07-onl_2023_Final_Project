@@ -58,6 +58,7 @@ namespace Platformer.Player
         private bool _isRunningLeft;
         private bool _isRunningRight;
         private bool _isJumping;
+        private bool _isDead;
 
 
         public static event Action OnCurrentHealthChanged;
@@ -93,40 +94,43 @@ namespace Platformer.Player
 
         private void Update()
         {
-
-            if (Input.GetKey(KeyCode.A))
+            if (!_isDead)
             {
-                _isRunningLeft = true;
-            }
 
-            if (Input.GetKey(KeyCode.D))
-            {
-                _isRunningRight = true;
-            }
-
-            if (Input.GetKeyDown(KeyCode.W))
-            {
-                _isJumping = true;
-            }
-
-            if (Input.GetKeyDown(KeyCode.Q))
-            {
-                if (_playerCherryBarManager.CurrentCherry != 0 && !_invulnerableByCherry)
+                if (Input.GetKey(KeyCode.A))
                 {
-                    SoundManager.Sound_Manager.PlayPlayerUseCherrySound();
-                    _invulnerableByCherry = true;
-                    _invulnerabilityView.enabled = true;
-                    StartCoroutine(DisableInvulnerabilityByCherry(_invulnerabilityTime));
-                    CherryDecrease();
+                    _isRunningLeft = true;
                 }
-            }
 
-            if (Input.GetKey(KeyCode.Space))
-            {
-                _playerAttackController.PlayerAttack();
-            }
+                if (Input.GetKey(KeyCode.D))
+                {
+                    _isRunningRight = true;
+                }
 
-            _playerView.Tick(_playerPhysics.Velocity, _playerPhysics.IsOnGround);
+                if (Input.GetKeyDown(KeyCode.W))
+                {
+                    _isJumping = true;
+                }
+
+                if (Input.GetKeyDown(KeyCode.Q))
+                {
+                    if (_playerCherryBarManager.CurrentCherry != 0 && !_invulnerableByCherry)
+                    {
+                        SoundManager.Sound_Manager.PlayPlayerUseCherrySound();
+                        _invulnerableByCherry = true;
+                        _invulnerabilityView.enabled = true;
+                        StartCoroutine(DisableInvulnerabilityByCherry(_invulnerabilityTime));
+                        CherryDecrease();
+                    }
+                }
+
+                if (Input.GetKey(KeyCode.Space))
+                {
+                    _playerAttackController.PlayerAttack();
+                }
+
+                _playerView.Tick(_playerPhysics.Velocity, _playerPhysics.IsOnGround);
+            }
         }
 
         private void FixedUpdate()
@@ -141,14 +145,15 @@ namespace Platformer.Player
 
         private void OnCollided(GameObject collidedObject)
         {
-            if (collidedObject.TryGetComponent<IDamageSource>(out var damageSource) && !_invulnerableAfterHit && !_invulnerableByCherry)
+            if (collidedObject.TryGetComponent<IDamageSource>(out var damageSource) && !_invulnerableAfterHit && !_invulnerableByCherry && !_isDead)
             {
                 _playerHealthBarManager.CurrentHealth -= damageSource.Damage;
-                Debug.Log(_invulnerableAfterHit);
+                //Debug.Log(_invulnerableAfterHit);
 
                 if (_playerHealthBarManager.CurrentHealth < 1)
                 {
                     // Death
+                    _isDead = true;
                     _playerPhysics.Disable();
                     _playerView.PlayDieAnimation(OnDieAnimationFinished);
                     SoundManager.Sound_Manager.PlayPlayerDeathSound();
