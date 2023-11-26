@@ -26,7 +26,8 @@ public class WaypointsWalker : MonoBehaviour
     {
         if (_nextWaypoint != null && _waypoints.Length > 0)
         {
-            transform.position = Vector3.Lerp(transform.position, _nextWaypoint.position, _moveSpeed * Time.deltaTime);
+            //Was Lerp
+            transform.position = Vector3.MoveTowards(transform.position, _nextWaypoint.position, _moveSpeed * Time.deltaTime);
 
             if (Vector3.Distance(transform.position, _nextWaypoint.position) < 0.2f)
             {

@@ -11,7 +11,6 @@ namespace Platformer.Player
         private static int PlayerLayerIndex;
         private static int PlayerGhostLayerIndex;
 
-
         public override event Action<GameObject> OnCollided;
 
         public override Vector2 Velocity => _rigidbody2D.velocity;
@@ -44,7 +43,6 @@ namespace Platformer.Player
         private bool _isOnGround;
 
         private readonly List<GameObject> _collidedGroundObjects = new List<GameObject>();
-
 
         private void Awake()
         {
@@ -125,7 +123,9 @@ namespace Platformer.Player
 
                 if (_collidedGroundObjects.Count == 0)
                 {
+                    Debug.Log("I'm in air");
                     _isOnGround = false;
+                    _rigidbody2D.transform.parent = null;
                 }
             }
         }
