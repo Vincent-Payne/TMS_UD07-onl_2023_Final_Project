@@ -123,7 +123,6 @@ namespace Platformer.Player
 
                 if (_collidedGroundObjects.Count == 0)
                 {
-                    Debug.Log("I'm in air");
                     _isOnGround = false;
                     _rigidbody2D.transform.parent = null;
                 }
