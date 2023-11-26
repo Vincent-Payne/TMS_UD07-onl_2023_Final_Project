@@ -12,6 +12,11 @@ namespace Promenade.Scripts.GamePhysics.UI
         [SerializeField]
         private Button _quitButton;
 
+        [SerializeField]
+        private GameObject _healthBar;
+        [SerializeField]
+        private GameObject _cherryBar;
+
 
         public override void Enter()
         {
@@ -29,12 +34,16 @@ namespace Promenade.Scripts.GamePhysics.UI
 
             _startButton.onClick.RemoveListener(OnStart);
             _quitButton.onClick.RemoveListener(OnQuit);
-
+            _healthBar.SetActive(true);
+            _cherryBar.SetActive(true);
             Time.timeScale = 1f;
         }
 
         private void OnStart()
         {
+
+            _healthBar.SetActive(false);
+            _cherryBar.SetActive(false);
             _UIManager.SwitchTo(typeof(GameState));
         }
 

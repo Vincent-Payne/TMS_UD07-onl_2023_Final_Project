@@ -5,6 +5,7 @@ using Platformer.Pickables;
 using UnityEngine;
 using System.Collections;
 using Unity.VisualScripting;
+using UnityEngine.SceneManagement;
 
 namespace Platformer.Player
 {
@@ -151,11 +152,8 @@ namespace Platformer.Player
 
                 if (_playerHealthBarManager.CurrentHealth < 1)
                 {
-                    // Death
-                    _isDead = true;
-                    _playerPhysics.Disable();
-                    _playerView.PlayDieAnimation(OnDieAnimationFinished);
-                    SoundManager.Sound_Manager.PlayPlayerDeathSound();
+                    //Death
+                    StartCoroutine(PlayerDeathCoroutine(2f));
                 }
                 else
                 {
@@ -204,6 +202,16 @@ namespace Platformer.Player
             yield return new WaitForSeconds(time);
             _invulnerableByCherry = false;
             _invulnerabilityView.enabled = false;
+        }
+
+        private IEnumerator PlayerDeathCoroutine(float time)
+        {
+            _isDead = true;
+            _playerPhysics.Disable();
+            _playerView.PlayDieAnimation(OnDieAnimationFinished);
+            SoundManager.Sound_Manager.PlayPlayerDeathSound();
+            yield return new WaitForSeconds(time);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }
 }
